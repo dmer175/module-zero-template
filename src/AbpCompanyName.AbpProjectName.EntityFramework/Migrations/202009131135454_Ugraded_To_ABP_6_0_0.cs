@@ -6,6 +6,7 @@
     public partial class Ugraded_To_ABP_6_0_0 : DbMigration
     {
         //Library Management System
+        //https://www.cnblogs.com/wkfvawl/p/11052660.html
         public override void Up()
         {
             CreateTable(
@@ -31,7 +32,10 @@
                     Author =c.String(),
                     price=c.Double(),
                     totalPages=c.Int(),
-                    TotalInventory=c.Int()
+                    TotalInventory=c.Int(),
+                    ExistingInventory=c.Int(),
+                    StorageTime= c.DateTime(nullable: false),    //这里应该是不考虑每本的情况
+                    loansNumber=c.Int()
                 })
                 .PrimaryKey(t => t.bookId)
                 .Index(t => t.bookTypeId)
