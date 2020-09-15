@@ -29,8 +29,8 @@
                 {
                     BookId = c.Int(nullable: false, identity: true),
                     BookNo = c.String(maxLength: 250),
-                    PublishingHouseId = c.String(),
-                    BookTypeId = c.String(),
+                    PublishingHouseId = c.Int(),
+                    BookTypeId = c.Int(),
                     BookName = c.String(),
                     Author =c.String(),
                     Price=c.Double(),
@@ -57,7 +57,7 @@
                {
                    ReaderId = c.Int(nullable: false, identity: true),
                    ReaderTypeId = c.Int(),
-                   LibraryId = c.String(),
+                   LibraryId = c.Int(),
                    ReaderName=c.String(),
                    Gender=c.String(),
                    BirthDateTime=c.DateTime(),
@@ -71,7 +71,7 @@
                .Index(t=>t.ReaderTypeId)
                .Index(t=>t.LibraryId);
 
-            CreateTable("dbo.Lms_Readers",
+            CreateTable("dbo.Lms_ReaderType",
               c => new
               {
                   ReaderTypeId = c.Int(nullable: false, identity: true),
@@ -82,6 +82,86 @@
               })
               .PrimaryKey(t => t.ReaderTypeId);
 
+            CreateTable("dbo.Lms_Library",
+             c => new
+             {
+                 LibraryId = c.Int(nullable: false, identity: true),
+                 ReaderTypeName = c.String()                
+             })
+             .PrimaryKey(t => t.LibraryId);
+
+
+            CreateTable("dbo.Lms_Staffs",
+             c => new
+             {
+                 StaffId = c.Int(nullable: false, identity: true),
+                 StaffName = c.String(),
+                 Gender = c.Int()
+             })
+             .PrimaryKey(t => t.StaffId);
+
+
+            CreateTable("dbo.Lms_FinePaymentBill",
+             c => new
+             {
+                 FinePaymentBillId = c.Int(nullable: false, identity: true),
+                 LibraryCardId = c.Int(),
+                 FinePaymentBillTime = c.DateTime(),
+                 Amount = c.Decimal()
+             })
+             .PrimaryKey(t => t.FinePaymentBillId);
+
+            CreateTable("dbo.Lms_BookStorage",
+             c => new
+             {
+                 BookStorageId = c.Int(nullable: false, identity: true),
+                 BookStorageTime = c.DateTime(),
+                 UserId = c.Long(),
+                 IsStorage = c.Int()
+             })
+             .PrimaryKey(t => t.BookStorageId);
+
+            CreateTable("dbo.Lms_BookStorageDetail",
+             c => new
+             {
+                 BookStorageId = c.Int(nullable: false),
+                 BookId = c.Int(nullable: false),
+                 Quantity = c.Int()
+             })
+             .PrimaryKey(t => t.BookStorageId)
+             .PrimaryKey(t=>t.BookId);
+
+            CreateTable("dbo.Lms_BookDamage",
+             c => new
+             {
+                 BookDamageId = c.Int(nullable: false, identity: true),
+                 BookDamageTime = c.DateTime(),
+                 UserId = c.Long()
+             })
+             .PrimaryKey(t => t.BookDamageId);
+
+            CreateTable("dbo.Lms_BookDamageDetail",
+             c => new
+             {
+                 BookDamageId = c.Int(nullable: false),
+                 BookId = c.Int(),
+                 Quantity = c.Int(),
+                 DamageReason=c.String()
+             })
+             .PrimaryKey(t => t.BookDamageId)
+             .PrimaryKey(t => t.BookId);
+
+            CreateTable("dbo.Lms_BookBorrow",
+             c => new
+             {
+                 LibraryCardId = c.Int(nullable: false),
+                 BookId = c.Int(),
+                 BookBorrowTime = c.DateTime(),
+                 BookReturnTime = c.DateTime(),
+                 IsRenew=c.Int()
+             })
+             .PrimaryKey(t => t.LibraryCardId)
+             .PrimaryKey(t => t.BookId);
         }
 
         public override void Down()
